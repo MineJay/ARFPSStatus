@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ARFPSStatus.shared.open()
         
+//        ARFPSStatus.shared.openWithHandler { (fpsValue) in
+//            print("fpsValue \(fpsValue)")
+//        }
+//        
         return true
     }
 

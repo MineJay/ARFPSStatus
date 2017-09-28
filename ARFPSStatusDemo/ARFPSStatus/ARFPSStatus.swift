@@ -16,15 +16,13 @@ import Foundation
 
 class ARFPSStatus: NSObject {
     
-    
-    
     open class var shared: ARFPSStatus {
         return ARFPSStatus()
     }
     
     var fpsLabel: UILabel!
     
-    var displayLink: CADisplayLink?
+    var displayLink: CADisplayLink!
     
     var lastTime: TimeInterval = 0
     
@@ -33,8 +31,8 @@ class ARFPSStatus: NSObject {
     var fpsHandler: ((_ fpsValue: Double) -> Void)?
     
     deinit {
-        displayLink?.isPaused = true
-        displayLink?.remove(from: RunLoop.current, forMode: .commonModes)
+        displayLink.isPaused = true
+        displayLink.remove(from: RunLoop.current, forMode: .commonModes)
     }
     
     override init() {
@@ -45,8 +43,8 @@ class ARFPSStatus: NSObject {
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActiveNotification), name: Notification.Name.UIApplicationWillResignActive, object: nil)
         
         displayLink = CADisplayLink(target: self, selector: #selector(displayLinkTick))
-        displayLink?.isPaused = true
-        displayLink?.add(to: RunLoop.current, forMode: .commonModes)
+        displayLink.isPaused = true
+        displayLink.add(to: RunLoop.current, forMode: .commonModes)
         
         fpsLabel = UILabel(frame: CGRect(x: UIScreen.main.bounds.size.width/2 + 50, y: 0, width: 50, height: 20))
         fpsLabel.font = UIFont.boldSystemFont(ofSize: 12)
@@ -57,11 +55,11 @@ class ARFPSStatus: NSObject {
     }
     
     @objc func applicationDidBecomeActiveNotification() {
-        displayLink?.isPaused = false
+        displayLink.isPaused = false
     }
     
     @objc func applicationWillResignActiveNotification() {
-        displayLink?.isPaused = true
+        displayLink.isPaused = true
     }
     
     @objc func displayLinkTick(link: CADisplayLink) {
@@ -96,7 +94,7 @@ class ARFPSStatus: NSObject {
             }
         }
         
-        displayLink?.isPaused = false
+        displayLink.isPaused = false
         UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(fpsLabel)
     }
     
