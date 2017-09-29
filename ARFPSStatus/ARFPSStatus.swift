@@ -14,21 +14,21 @@
 import UIKit
 import Foundation
 
-class ARFPSStatus: NSObject {
+open class ARFPSStatus: NSObject {
     
     open class var shared: ARFPSStatus {
         return ARFPSStatus()
     }
     
-    var fpsLabel: UILabel!
+    fileprivate var fpsLabel: UILabel!
     
-    var displayLink: CADisplayLink!
+    fileprivate var displayLink: CADisplayLink!
     
-    var lastTime: TimeInterval = 0
+    fileprivate var lastTime: TimeInterval = 0
     
-    var count: Double = 0
+    fileprivate var count: Double = 0
     
-    var fpsHandler: ((_ fpsValue: Double) -> Void)?
+    fileprivate var fpsHandler: ((_ fpsValue: Double) -> Void)?
     
     deinit {
         displayLink.isPaused = true
@@ -50,7 +50,7 @@ class ARFPSStatus: NSObject {
         fpsLabel.font = UIFont.boldSystemFont(ofSize: 12)
         fpsLabel.textColor = UIColor(red: 0.33, green: 0.84, blue: 0.43, alpha: 1.00)
         fpsLabel.textAlignment = .right
-        fpsLabel.tag = 101
+        fpsLabel.tag = 1587
         
     }
     
@@ -85,11 +85,11 @@ class ARFPSStatus: NSObject {
         
     }
     
-    func open() {
+    open func open() {
         let rootVCViewSubViews = UIApplication.shared.delegate?.window??.rootViewController?.view.subviews
         
         for label: UIView in rootVCViewSubViews! {
-            if label.isKind(of: UILabel.self) && label.tag == 101 {
+            if label.isKind(of: UILabel.self) && label.tag == 1587 {
                 return
             }
         }
@@ -98,9 +98,21 @@ class ARFPSStatus: NSObject {
         UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(fpsLabel)
     }
     
-    func openWithHandler(handler: @escaping (_ fpsValue: Double) -> Void) {
+    open func openWithHandler(handler: @escaping (_ fpsValue: Double) -> Void) {
         ARFPSStatus.shared.open()
         fpsHandler = handler
+    }
+    
+    open func close() {
+        displayLink.isPaused = true
+        
+        let rootViewSubViews = UIApplication.shared.delegate?.window??.rootViewController?.view.subviews
+        for label: UIView in rootViewSubViews! {
+            if label.isKind(of: UILabel.self) && label.tag == 1587 {
+                label.removeFromSuperview()
+                return
+            }
+        }
     }
     
     
