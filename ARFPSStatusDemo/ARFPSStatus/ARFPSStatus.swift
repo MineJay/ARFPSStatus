@@ -88,7 +88,7 @@ class ARFPSStatus: NSObject {
     func open() {
         let rootVCViewSubViews = UIApplication.shared.delegate?.window??.rootViewController?.view.subviews
         
-        for var label: UIView in rootVCViewSubViews! {
+        for label: UIView in rootVCViewSubViews! {
             if label.isKind(of: UILabel.self) && label.tag == 101 {
                 return
             }
